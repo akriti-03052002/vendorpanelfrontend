@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Copy, Check, Loader2 } from "lucide-react";
+import { Plus, Copy, Check, Loader2, Link2 } from "lucide-react";
 import api from "../../services/api";
 import Card from "../../components/ui/Card";
 import Table from "../../components/ui/Table";
@@ -172,6 +172,9 @@ export default function Customers() {
   // VerifiedGate (wrapping this route) already guarantees the partner is
   // fully verified before this page ever renders.
   const referralCode = partner?.referral?.referralCode;
+  // Always built by the backend from its CLIENT_URL (see backend
+  // config/clientUrl.js), so it follows wherever the frontend is deployed.
+  const referralLink = partner?.referral?.referralLink;
 
   return (
     <div className="space-y-6">
@@ -191,8 +194,10 @@ export default function Customers() {
             <span className="font-heading text-2xl font-extrabold text-brand-black tracking-widest">{referralCode}</span>
             <CopyButton value={referralCode} />
             <span className="text-slate-300 mx-1">|</span>
-            <span className="text-sm text-slate-500 truncate">{partner.referral.referralLink}</span>
-            <CopyButton value={partner.referral.referralLink} />
+            <a href={referralLink} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm font-semibold text-brand-red hover:underline">
+              <Link2 size={15} /> Referral link
+            </a>
+            <CopyButton value={referralLink} />
           </div>
           <p className="text-xs text-slate-400 mt-2">Share this with customers — anyone who registers with it is automatically mapped to you.</p>
         </Card>
